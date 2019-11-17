@@ -20,6 +20,7 @@ func NewRegexp(re string) *Regexp {
 	ast := psr.GetAST()
 	bc := ast.Compile()
 	bc.AddInst(instruction.NewInst(opcode.Match, 0, nil, nil), bc.N)
+	bc.RemoveNOP()
 
 	return &Regexp{
 		regexp:  re,
