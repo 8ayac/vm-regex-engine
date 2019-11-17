@@ -4,6 +4,7 @@ package bytecode
 import (
 	"fmt"
 	"github.com/8ayac/vm-regex-engine/vm/instruction"
+	"github.com/8ayac/vm-regex-engine/vm/opcode"
 )
 
 // BC represents a line of instructions.
@@ -69,4 +70,40 @@ func (bc *BC) AddInst(inst *instruction.Inst, i int) {
 // PushInst adds the argument instruction to the top of BC.
 func (bc *BC) PushInst(inst *instruction.Inst) {
 	bc.AddInst(inst, 0)
+}
+
+// RemoveNOP removes NOP instructions from BC to minimize it.
+func (bc *BC) RemoveNOP() {
+	newBC := NewByteCode()
+
+	for _, inst := range bc.Code {
+		switch inst.Opcode {
+		case opcode.Jmp:
+			if inst.X.Opcode == opcode.Dummy {
+				inst.X = bc.getOptimalDst(bc.IndexOf(inst.X))
+			}
+		case opcode.Split:
+			if inst.X.Opcode == opcode.Dummy {
+				inst.X = bc.getOptimalDst(bc.IndexOf(inst.X))
+			}
+			if inst.Y.Opcode == opcode.Dummy {
+				inst.Y = bc.getOptimalDst(bc.IndexOf(inst.Y))
+			}
+		}
+		if inst.Opcode != opcode.Dummy {
+			newBC.AddInst(inst, newBC.N)
+		}
+	}
+	bc.Code = newBC.Code
+	bc.N = newBC.N
+}
+
+func (bc *BC) getOptimalDst(from int) *instruction.Inst {
+	prog := bc.Code
+	for i := from; i < bc.N; i++ {
+		if prog[i].Opcode != opcode.Dummy {
+			return prog[i]
+		}
+	}
+	return nil
 }
