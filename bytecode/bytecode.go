@@ -75,7 +75,6 @@ func (bc *BC) PushInst(inst *instruction.Inst) {
 // RemoveNOP removes NOP instructions from BC to minimize it.
 func (bc *BC) RemoveNOP() {
 	newBC := NewByteCode()
-
 	for _, inst := range bc.Code {
 		switch inst.Opcode {
 		case opcode.Jmp:
