@@ -74,7 +74,7 @@ func (v *VM) Run(input string) bool {
 				nready++
 				pc = v.bc.IndexOf(prog[pc].X)
 				continue
-			case opcode.Dummy:
+			case opcode.NOP:
 				pc++
 				continue
 			}

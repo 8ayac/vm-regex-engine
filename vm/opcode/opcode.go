@@ -14,8 +14,8 @@ func (op Opcode) String() string {
 		return "Jmp"
 	case Split:
 		return "Split"
-	case Dummy:
-		return "Dummy"
+	case NOP:
+		return "NOP"
 	}
 	return ""
 }
@@ -25,5 +25,5 @@ const (
 	Match
 	Jmp
 	Split
-	Dummy
+	NOP
 )

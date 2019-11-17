@@ -25,7 +25,7 @@ func (inst Inst) String() string {
 		return fmt.Sprintf("Jmp %p(%+v)", inst.X, inst.X)
 	case opcode.Split:
 		return fmt.Sprintf("Split %p(%+v), %p(%+v)", inst.X, inst.X, inst.Y, inst.Y)
-	case opcode.Dummy:
+	case opcode.NOP:
 		return fmt.Sprintf("<nop>")
 	}
 	return ""

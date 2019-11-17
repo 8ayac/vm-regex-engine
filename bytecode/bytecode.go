@@ -79,18 +79,18 @@ func (bc *BC) RemoveNOP() {
 	for _, inst := range bc.Code {
 		switch inst.Opcode {
 		case opcode.Jmp:
-			if inst.X.Opcode == opcode.Dummy {
+			if inst.X.Opcode == opcode.NOP {
 				inst.X = bc.getOptimalDst(bc.IndexOf(inst.X))
 			}
 		case opcode.Split:
-			if inst.X.Opcode == opcode.Dummy {
+			if inst.X.Opcode == opcode.NOP {
 				inst.X = bc.getOptimalDst(bc.IndexOf(inst.X))
 			}
-			if inst.Y.Opcode == opcode.Dummy {
+			if inst.Y.Opcode == opcode.NOP {
 				inst.Y = bc.getOptimalDst(bc.IndexOf(inst.Y))
 			}
 		}
-		if inst.Opcode != opcode.Dummy {
+		if inst.Opcode != opcode.NOP {
 			newBC.AddInst(inst, newBC.N)
 		}
 	}
@@ -101,7 +101,7 @@ func (bc *BC) RemoveNOP() {
 func (bc *BC) getOptimalDst(from int) *instruction.Inst {
 	prog := bc.Code
 	for i := from; i < bc.N; i++ {
-		if prog[i].Opcode != opcode.Dummy {
+		if prog[i].Opcode != opcode.NOP {
 			return prog[i]
 		}
 	}

@@ -105,7 +105,7 @@ func (u *Union) Compile() *bytecode.BC {
 
 	l1 := e1.Code[0]
 	l2 := e2.Code[0]
-	l3 := instruction.NewInst(opcode.Dummy, 0, nil, nil)
+	l3 := instruction.NewInst(opcode.NOP, 0, nil, nil)
 
 	bc.PushInst(l3)
 	bc.PushCode(*e2)
@@ -192,7 +192,7 @@ func (s *Star) Compile() *bytecode.BC {
 
 	e := s.Ope.Compile()
 
-	l3 := instruction.NewInst(opcode.Dummy, 0, nil, nil)
+	l3 := instruction.NewInst(opcode.NOP, 0, nil, nil)
 	l2 := e.Code[0]
 	l1 := instruction.NewInst(opcode.Split, 0, l2, l3)
 
@@ -237,7 +237,7 @@ type Epsilon struct {
 // you need to add the instruction of Match to the last of BC.
 func (*Epsilon) Compile() *bytecode.BC {
 	bc := bytecode.NewByteCode()
-	bc.PushInst(instruction.NewInst(opcode.Dummy, 0, nil, nil))
+	bc.PushInst(instruction.NewInst(opcode.NOP, 0, nil, nil))
 	return bc
 }
 
