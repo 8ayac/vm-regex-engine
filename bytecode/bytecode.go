@@ -72,8 +72,13 @@ func (bc *BC) PushInst(inst *instruction.Inst) {
 	bc.AddInst(inst, 0)
 }
 
-// RemoveNOP removes NOP instructions from BC to minimize it.
-func (bc *BC) RemoveNOP() {
+// Optimize optimizes (or minimize) the bytecode.
+func (bc *BC) Optimize() {
+	bc.removeNOP()
+}
+
+// removeNOP removes NOP instructions from BC to minimize it.
+func (bc *BC) removeNOP() {
 	newBC := NewByteCode()
 	for _, inst := range bc.Code {
 		switch inst.Opcode {
