@@ -75,6 +75,7 @@ func (bc *BC) PushInst(inst *instruction.Inst) {
 // Optimize optimizes (or minimize) the bytecode.
 func (bc *BC) Optimize() {
 	bc.removeNOP()
+	bc.optimizeChainedJmp()
 }
 
 // removeNOP removes NOP instructions from BC to minimize it.
@@ -110,4 +111,41 @@ func (bc *BC) canReachWithOnlyNOP(from int) *instruction.Inst {
 		}
 	}
 	return nil
+}
+
+// optimizeChainedJmp optimizes chained Jmp instruction. (e.g. [Jmp 01 -> Jmp 02 -> Jmp 03 -> Jmp Match] to [Jmp 01 -> Jmp Match])
+func (bc *BC) optimizeChainedJmp() {
+	for _, inst := range bc.Code {
+		switch inst.Opcode {
+		case opcode.Jmp:
+			if inst.X.Opcode == opcode.Jmp {
+				inst.X = bc.chainedJmpDst(inst.X)
+			}
+		case opcode.Split:
+			if inst.X.Opcode == opcode.Jmp {
+				inst.X = bc.chainedJmpDst(inst.X)
+			}
+			if inst.Y.Opcode == opcode.Jmp {
+				inst.Y = bc.chainedJmpDst(inst.Y)
+			}
+		}
+	}
+}
+
+// chainedJmpDst returns the instruction which in the end will be reached from the argument instruction.
+func (bc *BC) chainedJmpDst(jmp *instruction.Inst) *instruction.Inst {
+	// Use only for optimizing jmp destination.
+	if jmp.Opcode != opcode.Jmp {
+		panic("the inst opcode is NOT Jmp")
+	}
+
+	// Check recursively.
+	dst := jmp.X
+	for {
+		if dst.Opcode != opcode.Jmp {
+			break
+		}
+		dst = dst.X
+	}
+	return dst
 }
