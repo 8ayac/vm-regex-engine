@@ -76,6 +76,7 @@ func (bc *BC) PushInst(inst *instruction.Inst) {
 func (bc *BC) Optimize() {
 	bc.removeNOP()
 	bc.optimizeChainedJmp()
+	bc.removeUnreachableInst()
 }
 
 // removeNOP removes NOP instructions from BC to minimize it.
@@ -148,4 +149,33 @@ func (bc *BC) chainedJmpDst(jmp *instruction.Inst) *instruction.Inst {
 		dst = dst.X
 	}
 	return dst
+}
+
+// removeUnreachableInst removes all the unreachable instructions from the bytecode.
+func (bc *BC) removeUnreachableInst() {
+	bc.removeUnreachableJmp()
+}
+
+// removeUnreachableJmp removes unreachable Jmp instruction from the bytecode.
+func (bc *BC) removeUnreachableJmp() {
+	for i := bc.N - 1; i > 0; i-- {
+		if bc.Code[i].Opcode == opcode.Jmp && bc.Code[i-1].Opcode == opcode.Jmp && bc.heldAsOperandCnt(bc.Code[i]) == 0 {
+			bc.Code = append(bc.Code[:i], bc.Code[i+1:]...)
+			bc.N--
+		}
+	}
+}
+
+// heldAsOperandCnt returns how many instructions in bytecode have inst as operand.
+func (bc *BC) heldAsOperandCnt(inst *instruction.Inst) int {
+	cnt := 0
+	for _, inst := range bc.Code {
+		if inst.X == inst {
+			cnt++
+		}
+		if inst.Y == inst {
+			cnt++
+		}
+	}
+	return cnt
 }
