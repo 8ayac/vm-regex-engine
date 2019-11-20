@@ -14,6 +14,7 @@ const (
 	TypeUnion     = "Union"
 	TypeConcat    = "Concat"
 	TypeStar      = "Star"
+	TypePlus      = "Plus"
 	TypeEpsilon   = "Epsilon" // Empty character
 )
 
@@ -219,6 +220,54 @@ func NewStar(ope Node) *Star {
 // SubtreeString returns a string to which converts
 // a subtree with the Star node at the top.
 func (s *Star) SubtreeString() string {
+	return fmt.Sprintf("\x1b[33m%s(%s\x1b[33m)\x1b[0m", s.Ty, s.Ope.SubtreeString())
+}
+
+// Plus represents the Plus node.
+type Plus struct {
+	Ty  string
+	Ope Node
+}
+
+// Compile returns a BC compiled from Plus node which VM can execute.
+// The BC compiled from an expression 'a' will be like below:
+//
+// |00| Char 'a'
+// |01| Split 0, 2
+// |02| <nop>
+//
+// Note:
+// The bytecode is just a fragment, so when finally give VM it,
+// you need to add the instruction of Match to the last of BC.
+func (s *Plus) Compile() *bytecode.BC {
+	bc := bytecode.NewByteCode()
+
+	e := s.Ope.Compile()
+	l1 := e.Code[0]
+	l2 := instruction.NewInst(opcode.NOP, 0, nil, nil)
+
+	bc.PushInst(l2)
+	bc.PushInst(instruction.NewInst(opcode.Split, 0, l1, l2))
+	bc.PushCode(*e)
+
+	return bc
+}
+
+func (s *Plus) String() string {
+	return s.SubtreeString()
+}
+
+// NewPlus returns a new Plus node.
+func NewPlus(ope Node) *Plus {
+	return &Plus{
+		Ty:  TypePlus,
+		Ope: ope,
+	}
+}
+
+// SubtreeString returns a string to which converts
+// a subtree with the Star node at the top.
+func (s *Plus) SubtreeString() string {
 	return fmt.Sprintf("\x1b[33m%s(%s\x1b[33m)\x1b[0m", s.Ty, s.Ope.SubtreeString())
 }
 

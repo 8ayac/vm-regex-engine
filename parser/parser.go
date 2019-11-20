@@ -87,13 +87,13 @@ func (psr *Parser) seq() node.Node {
 	return node.NewEpsilon()
 }
 
-// subseq -> subseq star | star
+// subseq -> subseq sufope | sufope
 // (
-//	subseq  -> star _subseq
-//	_subseq -> star _subseq | ε
+//	subseq  -> sufope _subseq
+//	_subseq -> sufope _subseq | ε
 // )
 func (psr *Parser) subseq() node.Node {
-	nd := psr.star()
+	nd := psr.sufope()
 	if psr.look.Ty == token.LPAREN || psr.look.Ty == token.CHARACTER {
 		nd2 := psr.subseq()
 		return node.NewConcat(nd, nd2)
@@ -101,12 +101,18 @@ func (psr *Parser) subseq() node.Node {
 	return nd
 }
 
-// star -> factor '*' | factor
-func (psr *Parser) star() node.Node {
+// sufope -> factor ('*'|'+') | factor
+func (psr *Parser) sufope() node.Node {
 	nd := psr.factor()
+	op := psr.look.V
 	if psr.look.Ty == token.SuffixOpe {
 		psr.moveWithValidation(token.SuffixOpe)
-		return node.NewStar(nd)
+		switch op {
+		case '*':
+			return node.NewStar(nd)
+		case '+':
+			return node.NewPlus(nd)
+		}
 	}
 	return nd
 }

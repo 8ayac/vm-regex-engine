@@ -25,6 +25,8 @@ func (k Type) String() string {
 	case SuffixOpe:
 		if k == '*' {
 			return "OPE_STAR"
+		} else if k == '+' {
+			return "OPE_PLUS"
 		} else {
 			return "SUFFIX_OPE"
 		}
