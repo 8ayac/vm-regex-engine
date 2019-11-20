@@ -306,7 +306,7 @@ func (q *Question) String() string {
 	return q.SubtreeString()
 }
 
-// NewPlus returns a new Plus node.
+// NewQuestion returns a new Question node.
 func NewQuestion(ope Node) *Question {
 	return &Question{
 		Ty:  TypeQuestion,
