@@ -41,6 +41,11 @@ func (l *Lexer) getToken(r rune) *token.Token {
 // the symbol slice held in Lexer struct.
 func (l *Lexer) Scan() (tokenList []*token.Token) {
 	for i := 0; i < len(l.s); i++ {
+		if l.s[i] == '\\' {
+			tokenList = append(tokenList, token.NewToken(l.s[i+1], token.CHARACTER))
+			i++
+			continue
+		}
 		tokenList = append(tokenList, l.getToken(l.s[i]))
 	}
 	return
