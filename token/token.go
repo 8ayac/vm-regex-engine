@@ -10,7 +10,7 @@ type Type int
 const (
 	CHARACTER Type = iota
 	OpeUnion
-	OpeStar
+	SuffixOpe
 	LPAREN
 	RPAREN
 	EOF
@@ -22,8 +22,12 @@ func (k Type) String() string {
 		return "CHARACTER"
 	case OpeUnion:
 		return "OPE_UNION"
-	case OpeStar:
-		return "OPE_STAR"
+	case SuffixOpe:
+		if k == '*' {
+			return "OPE_STAR"
+		} else {
+			return "SUFFIX_OPE"
+		}
 	case LPAREN:
 		return "LPAREN"
 	case RPAREN:

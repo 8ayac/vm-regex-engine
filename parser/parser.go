@@ -104,8 +104,8 @@ func (psr *Parser) subseq() node.Node {
 // star -> factor '*' | factor
 func (psr *Parser) star() node.Node {
 	nd := psr.factor()
-	if psr.look.Ty == token.OpeStar {
-		psr.moveWithValidation(token.OpeStar)
+	if psr.look.Ty == token.SuffixOpe {
+		psr.moveWithValidation(token.SuffixOpe)
 		return node.NewStar(nd)
 	}
 	return nd
