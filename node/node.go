@@ -15,6 +15,7 @@ const (
 	TypeConcat    = "Concat"
 	TypeStar      = "Star"
 	TypePlus      = "Plus"
+	TypeQuestion  = "Question"
 	TypeEpsilon   = "Epsilon" // Empty character
 )
 
@@ -269,6 +270,54 @@ func NewPlus(ope Node) *Plus {
 // a subtree with the Star node at the top.
 func (p *Plus) SubtreeString() string {
 	return fmt.Sprintf("\x1b[33m%s(%s\x1b[33m)\x1b[0m", p.Ty, p.Ope.SubtreeString())
+}
+
+// Question represents the Question node.
+type Question struct {
+	Ty  string
+	Ope Node
+}
+
+// Compile returns a BC compiled from Question node which VM can execute.
+// The BC compiled from an expression 'a' will be like below:
+//
+// |00| Split 1, 2
+// |01| Char 'a'
+// |02| <nop>
+//
+// Note:
+// The bytecode is just a fragment, so when finally give VM it,
+// you need to add the instruction of Match to the last of BC.
+func (q *Question) Compile() *bytecode.BC {
+	bc := bytecode.NewByteCode()
+
+	e := q.Ope.Compile()
+	l1 := e.Code[0]
+	l2 := instruction.NewInst(opcode.NOP, 0, nil, nil)
+
+	bc.PushInst(l2)
+	bc.PushInst(l1)
+	bc.PushInst(instruction.NewInst(opcode.Split, 0, l1, l2))
+
+	return bc
+}
+
+func (q *Question) String() string {
+	return q.SubtreeString()
+}
+
+// NewPlus returns a new Plus node.
+func NewQuestion(ope Node) *Question {
+	return &Question{
+		Ty:  TypeQuestion,
+		Ope: ope,
+	}
+}
+
+// SubtreeString returns a string to which converts
+// a subtree with the Star node at the top.
+func (q *Question) SubtreeString() string {
+	return fmt.Sprintf("\x1b[33m%s(%s\x1b[33m)\x1b[0m", q.Ty, q.Ope.SubtreeString())
 }
 
 // Epsilon represents the Star node.

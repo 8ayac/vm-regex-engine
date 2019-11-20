@@ -112,6 +112,8 @@ func (psr *Parser) sufope() node.Node {
 			return node.NewStar(nd)
 		case '+':
 			return node.NewPlus(nd)
+		case '?':
+			return node.NewQuestion(nd)
 		}
 	}
 	return nd

@@ -32,7 +32,7 @@ func (l *Lexer) getToken(r rune) *token.Token {
 		return token.NewToken(r, token.LPAREN)
 	case ')':
 		return token.NewToken(r, token.RPAREN)
-	case '*', '+':
+	case '*', '+', '?':
 		return token.NewToken(r, token.SuffixOpe)
 	default:
 		return token.NewToken(r, token.CHARACTER)

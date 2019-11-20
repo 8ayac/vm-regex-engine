@@ -14,6 +14,7 @@ The engine supports the following metacharacters.
 |---|---|---|
 |*|Matches 0 or more repetitions of a pattern.|a* = a, aaa...|
 |+|Matches 1 or more repetitions of a pattern.|(abc)+ = abc, abcabc, abcabcabc...|
+|?|Matches 0 or 1 repetitions of a pattern.|Apple? = Appl, Apple| 
 |&#x7C;|Match any of the left and right patterns.(like the Boolean OR)|a&#x7c;b&#x7c;c = a, b, c|
 
 ## Usage
