@@ -114,7 +114,7 @@ func (bc *BC) canReachWithOnlyNOP(from int) *instruction.Inst {
 	return nil
 }
 
-// optimizeChainedJmp optimizes chained Jmp instruction. (e.g. [Jmp 01 -> Jmp 02 -> Jmp 03 -> Jmp Match] to [Jmp 01 -> Jmp Match])
+// optimizeChainedJmp optimizes chained Jmp instruction. (e.g. [00:Jmp 01 -> 01:Jmp 02 -> 02:Jmp 03 -> 03:Jmp Match] to [Jmp 03 -> 03:Jmp Match])
 func (bc *BC) optimizeChainedJmp() {
 	for _, inst := range bc.Code {
 		switch inst.Opcode {
