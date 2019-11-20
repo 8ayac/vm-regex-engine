@@ -24,8 +24,6 @@ func (l *Lexer) getToken(r rune) *token.Token {
 	switch r {
 	case '\x00':
 		return token.NewToken(r, token.EOF)
-	case '\\':
-		return token.NewToken(r, token.CHARACTER)
 	case '|':
 		return token.NewToken(r, token.OpeUnion)
 	case '(':
