@@ -320,19 +320,12 @@ func (q *Question) SubtreeString() string {
 	return fmt.Sprintf("\x1b[33m%s(%s\x1b[33m)\x1b[0m", q.Ty, q.Ope.SubtreeString())
 }
 
-// Epsilon represents the Star node.
+// Epsilon represents the Epsilon node.
 type Epsilon struct {
 	Ty string
 }
 
 // Compile returns a BC compiled from Epsilon node which VM can execute.
-// The BC compiled from an expression 'abc' will be like below:
-//
-// |00| <nop>
-//
-// Note:
-// The bytecode is just a fragment, so when finally give VM it,
-// you need to add the instruction of Match to the last of BC.
 func (*Epsilon) Compile() *bytecode.BC {
 	bc := bytecode.NewByteCode()
 	bc.PushInst(instruction.NewInst(opcode.NOP, 0, nil, nil))
