@@ -239,10 +239,10 @@ type Plus struct {
 // Note:
 // The bytecode is just a fragment, so when finally give VM it,
 // you need to add the instruction of Match to the last of BC.
-func (s *Plus) Compile() *bytecode.BC {
+func (p *Plus) Compile() *bytecode.BC {
 	bc := bytecode.NewByteCode()
 
-	e := s.Ope.Compile()
+	e := p.Ope.Compile()
 	l1 := e.Code[0]
 	l2 := instruction.NewInst(opcode.NOP, 0, nil, nil)
 
@@ -253,8 +253,8 @@ func (s *Plus) Compile() *bytecode.BC {
 	return bc
 }
 
-func (s *Plus) String() string {
-	return s.SubtreeString()
+func (p *Plus) String() string {
+	return p.SubtreeString()
 }
 
 // NewPlus returns a new Plus node.
@@ -267,8 +267,8 @@ func NewPlus(ope Node) *Plus {
 
 // SubtreeString returns a string to which converts
 // a subtree with the Star node at the top.
-func (s *Plus) SubtreeString() string {
-	return fmt.Sprintf("\x1b[33m%s(%s\x1b[33m)\x1b[0m", s.Ty, s.Ope.SubtreeString())
+func (p *Plus) SubtreeString() string {
+	return fmt.Sprintf("\x1b[33m%s(%s\x1b[33m)\x1b[0m", p.Ty, p.Ope.SubtreeString())
 }
 
 // Epsilon represents the Star node.
