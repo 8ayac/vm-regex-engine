@@ -16,7 +16,10 @@ type BC struct {
 func (bc BC) String() string {
 	s := ""
 	for i, inst := range bc.Code {
-		s += fmt.Sprintf("|%02d:(%p)| %v\n", i, inst, inst)
+		s += fmt.Sprintf("|%02d:(%p)| %v", i, inst, inst)
+		if i != bc.N-1 {
+			s += "\n"
+		}
 	}
 	return s
 }
