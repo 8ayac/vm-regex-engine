@@ -22,16 +22,12 @@ func (k Type) String() string {
 		return "CHARACTER"
 	case OpeUnion:
 		return "OPE_UNION"
-	case SuffixOpe:
-		if k == '*' {
-			return "OPE_STAR"
-		} else if k == '+' {
-			return "OPE_PLUS"
-		} else if k == '?' {
-			return "OPE_QUESTION"
-		} else {
-			return "SUFFIX_OPE"
-		}
+	case '*':
+		return "SUFFIX_OPE('*')"
+	case '+':
+		return "SUFFIX_OPE('+')"
+	case '?':
+		return "SUFFIX_OPE('?')"
 	case LPAREN:
 		return "LPAREN"
 	case RPAREN:
