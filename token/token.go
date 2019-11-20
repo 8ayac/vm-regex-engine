@@ -27,6 +27,8 @@ func (k Type) String() string {
 			return "OPE_STAR"
 		} else if k == '+' {
 			return "OPE_PLUS"
+		} else if k == '?' {
+			return "OPE_QUESTION"
 		} else {
 			return "SUFFIX_OPE"
 		}
