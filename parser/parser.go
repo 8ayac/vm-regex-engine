@@ -101,7 +101,7 @@ func (psr *Parser) subseq() node.Node {
 	return nd
 }
 
-// sufope -> factor ('*'|'+') | factor
+// sufope -> factor ('*'|'+'|'?') | factor
 func (psr *Parser) sufope() node.Node {
 	nd := psr.factor()
 	op := psr.look.V
