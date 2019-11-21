@@ -60,12 +60,10 @@ func (v *VM) Run(input string) bool {
 				}
 				sp++
 				pc++
-				continue
 			case opcode.Match:
 				return true
 			case opcode.Jmp:
 				pc = v.bc.IndexOf(prog[pc].X)
-				continue
 			case opcode.Split:
 				if nready >= MAXTHREAD {
 					panic("The thread in VM overflowed!")
@@ -73,7 +71,6 @@ func (v *VM) Run(input string) bool {
 				ready[nready] = NewThread(v.bc.IndexOf(prog[pc].Y), sp)
 				nready++
 				pc = v.bc.IndexOf(prog[pc].X)
-				continue
 			case opcode.ANY:
 				if []rune(input)[sp] == '\x00' {
 					goto Dead
@@ -82,7 +79,6 @@ func (v *VM) Run(input string) bool {
 				sp++
 			case opcode.NOP:
 				pc++
-				continue
 			}
 		}
 	Dead:
