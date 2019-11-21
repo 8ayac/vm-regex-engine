@@ -16,6 +16,7 @@ const (
 	TypeStar      = "Star"
 	TypePlus      = "Plus"
 	TypeQuestion  = "Question"
+	TypeAny       = "Any"
 	TypeEpsilon   = "Epsilon" // Empty character
 )
 
@@ -318,6 +319,42 @@ func NewQuestion(ope Node) *Question {
 // a subtree with the Star node at the top.
 func (q *Question) SubtreeString() string {
 	return fmt.Sprintf("\x1b[33m%s(%s\x1b[33m)\x1b[0m", q.Ty, q.Ope.SubtreeString())
+}
+
+// Any represents the Any node.
+type Any struct {
+	Ty string
+}
+
+// Compile returns a BC compiled from Any node which VM can execute.
+// The BC compiled from an expression '.' will be like below:
+//
+// |00| Any
+//
+// Note:
+// The bytecode is just a fragment, so when finally give VM it,
+// you need to add the instruction of Match to the last of BC.
+func (a *Any) Compile() *bytecode.BC {
+	bc := bytecode.NewByteCode()
+	bc.PushInst(instruction.NewInst(opcode.ANY, 0, nil, nil))
+	return bc
+}
+
+func (a *Any) String() string {
+	return a.SubtreeString()
+}
+
+// NewAny returns a new Any node.
+func NewAny() *Any {
+	return &Any{
+		Ty: TypeAny,
+	}
+}
+
+// SubtreeString returns a string to which converts
+// a subtree with the Any node at the top.
+func (a *Any) SubtreeString() string {
+	return fmt.Sprintf("\x1b[35m%s\x1b[0m", a.Ty)
 }
 
 // Epsilon represents the Epsilon node.

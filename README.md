@@ -12,6 +12,7 @@ The engine supports the following metacharacters.
 
 |Metacharacter|Desciption|Examples|
 |---|---|---|
+|.|Matches any characters.|. = a, b, c|
 |*|Matches 0 or more repetitions of a pattern.|a* = a, aaa...|
 |+|Matches 1 or more repetitions of a pattern.|(abc)+ = abc, abcabc, abcabcabc...|
 |?|Matches 0 or 1 repetitions of a pattern.|Apple? = Appl, Apple| 

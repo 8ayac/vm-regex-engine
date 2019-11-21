@@ -74,6 +74,12 @@ func (v *VM) Run(input string) bool {
 				nready++
 				pc = v.bc.IndexOf(prog[pc].X)
 				continue
+			case opcode.ANY:
+				if []rune(input)[sp] == '\x00' {
+					goto Dead
+				}
+				pc++
+				sp++
 			case opcode.NOP:
 				pc++
 				continue

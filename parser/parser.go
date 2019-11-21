@@ -81,7 +81,7 @@ func (psr *Parser) subexpr() node.Node {
 
 // seq -> subseq | ε
 func (psr *Parser) seq() node.Node {
-	if psr.look.Ty == token.LPAREN || psr.look.Ty == token.CHARACTER {
+	if psr.look.Ty == token.LPAREN || psr.look.Ty == token.CHARACTER || psr.look.Ty == token.ANY {
 		return psr.subseq()
 	}
 	return node.NewEpsilon()
@@ -94,7 +94,7 @@ func (psr *Parser) seq() node.Node {
 // )
 func (psr *Parser) subseq() node.Node {
 	nd := psr.sufope()
-	if psr.look.Ty == token.LPAREN || psr.look.Ty == token.CHARACTER {
+	if psr.look.Ty == token.LPAREN || psr.look.Ty == token.CHARACTER || psr.look.Ty == token.ANY {
 		nd2 := psr.subseq()
 		return node.NewConcat(nd, nd2)
 	}
@@ -119,15 +119,21 @@ func (psr *Parser) sufope() node.Node {
 	return nd
 }
 
-// factor -> '(' subexpr ')' | CHARACTER
+// factor -> '(' subexpr ')' | ANY | CHARACTER |
 func (psr *Parser) factor() node.Node {
-	if psr.look.Ty == token.LPAREN {
+	switch psr.look.Ty {
+	case token.LPAREN:
 		psr.moveWithValidation(token.LPAREN)
 		nd := psr.subexpr()
 		psr.moveWithValidation(token.RPAREN)
 		return nd
+	case token.ANY:
+		nd := node.NewAny()
+		psr.moveWithValidation(token.ANY)
+		return nd
+	default:
+		nd := node.NewCharacter(psr.look.V)
+		psr.moveWithValidation(token.CHARACTER)
+		return nd
 	}
-	nd := node.NewCharacter(psr.look.V)
-	psr.moveWithValidation(token.CHARACTER)
-	return nd
 }

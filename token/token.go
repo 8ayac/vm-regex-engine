@@ -11,6 +11,7 @@ const (
 	CHARACTER Type = iota
 	OpeUnion
 	SuffixOpe
+	ANY
 	LPAREN
 	RPAREN
 	EOF
@@ -32,6 +33,8 @@ func (k Type) String() string {
 		return "LPAREN"
 	case RPAREN:
 		return "RPAREN"
+	case ANY:
+		return "ANY"
 	case EOF:
 		return "EOF"
 	default:
