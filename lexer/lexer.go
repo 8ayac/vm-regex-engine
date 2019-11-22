@@ -27,13 +27,17 @@ func (l *Lexer) Scan() (tokenList []*token.Token) {
 		case '\x00':
 			tokenList = append(tokenList, token.NewToken(l.s[i], token.EOF))
 		case '|':
-			tokenList = append(tokenList, token.NewToken(l.s[i], token.OpeUnion))
+			tokenList = append(tokenList, token.NewToken(l.s[i], token.UNION))
 		case '(':
 			tokenList = append(tokenList, token.NewToken(l.s[i], token.LPAREN))
 		case ')':
 			tokenList = append(tokenList, token.NewToken(l.s[i], token.RPAREN))
-		case '*', '+', '?':
-			tokenList = append(tokenList, token.NewToken(l.s[i], token.SuffixOpe))
+		case '*':
+			tokenList = append(tokenList, token.NewToken(l.s[i], token.STAR))
+		case '+':
+			tokenList = append(tokenList, token.NewToken(l.s[i], token.PLUS))
+		case '?':
+			tokenList = append(tokenList, token.NewToken(l.s[i], token.QUESTION))
 		case '\\':
 			tokenList = append(tokenList, token.NewToken(l.s[i+1], token.CHARACTER))
 			i++

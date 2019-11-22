@@ -68,8 +68,8 @@ func (psr *Parser) expression() node.Node {
 func (psr *Parser) subexpr() node.Node {
 	nd := psr.seq()
 	for {
-		if psr.look.Ty == token.OpeUnion {
-			psr.moveWithValidation(token.OpeUnion)
+		if psr.look.Ty == token.UNION {
+			psr.moveWithValidation(token.UNION)
 			nd2 := psr.seq()
 			nd = node.NewUnion(nd, nd2)
 		} else {
@@ -104,17 +104,16 @@ func (psr *Parser) subseq() node.Node {
 // sufope -> factor ('*'|'+'|'?') | factor
 func (psr *Parser) sufope() node.Node {
 	nd := psr.factor()
-	op := psr.look.V
-	if psr.look.Ty == token.SuffixOpe {
-		psr.moveWithValidation(token.SuffixOpe)
-		switch op {
-		case '*':
-			return node.NewStar(nd)
-		case '+':
-			return node.NewPlus(nd)
-		case '?':
-			return node.NewQuestion(nd)
-		}
+	switch psr.look.Ty {
+	case token.STAR:
+		psr.move()
+		return node.NewStar(nd)
+	case token.PLUS:
+		psr.move()
+		return node.NewPlus(nd)
+	case token.QUESTION:
+		psr.move()
+		return node.NewQuestion(nd)
 	}
 	return nd
 }

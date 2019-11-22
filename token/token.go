@@ -9,8 +9,10 @@ type Type int
 // Each token is identified by a unique integer.
 const (
 	CHARACTER Type = iota
-	OpeUnion
-	SuffixOpe
+	UNION
+	STAR
+	PLUS
+	QUESTION
 	ANY
 	LPAREN
 	RPAREN
@@ -21,14 +23,14 @@ func (k Type) String() string {
 	switch k {
 	case CHARACTER:
 		return "CHARACTER"
-	case OpeUnion:
-		return "OPE_UNION"
-	case '*':
-		return "SUFFIX_OPE('*')"
-	case '+':
-		return "SUFFIX_OPE('+')"
-	case '?':
-		return "SUFFIX_OPE('?')"
+	case UNION:
+		return "UNION"
+	case STAR:
+		return "STAR"
+	case PLUS:
+		return "PLUS"
+	case QUESTION:
+		return "QUESTION"
 	case LPAREN:
 		return "LPAREN"
 	case RPAREN:
