@@ -31,9 +31,10 @@ func (v *VM) AddThread(t *Thread) {
 }
 
 // Run starts to execute regular expression matching for the input string.
-// The return value is determined by whether matching is success or not.
-// If success then will be true, but not success will be false.
-func (v *VM) Run(input string) bool {
+// If the matching was success the return value would be the matched position
+// in the string. The matched position is the number of characters from
+// the top of matched string to the end.
+func (v *VM) Run(input string) int {
 	const MAXTHREAD = 10000
 
 	prog := v.bc.Code
@@ -61,7 +62,7 @@ func (v *VM) Run(input string) bool {
 				sp++
 				pc++
 			case opcode.Match:
-				return true
+				return sp
 			case opcode.Jmp:
 				pc = v.bc.IndexOf(prog[pc].X)
 			case opcode.Split:
@@ -83,7 +84,7 @@ func (v *VM) Run(input string) bool {
 		}
 	Dead:
 	}
-	return false
+	return -1
 }
 
 // Thread represents a thread which has two pointers(program counter/string pointer).

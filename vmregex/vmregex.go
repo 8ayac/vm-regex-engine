@@ -34,6 +34,15 @@ func Compile(re string) *Regexp {
 }
 
 // Match returns whether the input string matches the regular expression.
-func (re *Regexp) Match(s string) bool {
-	return re.runtime.Run(s + "\x00")
+func (re *Regexp) Match(s string) (start, end int) {
+	result := 0
+	for i := 0; i < len(s); i++ {
+		result = re.runtime.Run(s[i:] + "\x00")
+		if result != -1 {
+			start = i
+			end = result + i
+			return
+		}
+	}
+	return
 }
