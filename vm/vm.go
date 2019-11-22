@@ -34,7 +34,7 @@ func (v *VM) AddThread(t *Thread) {
 // The return value is determined by whether matching is success or not.
 // If success then will be true, but not success will be false.
 func (v *VM) Run(input string) bool {
-	const MAXTHREAD = 10000 //
+	const MAXTHREAD = 10000
 
 	prog := v.bc.Code
 	ready := [MAXTHREAD]*Thread{}
