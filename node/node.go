@@ -297,7 +297,7 @@ func (q *Question) Compile() *bytecode.BC {
 	l2 := instruction.NewInst(opcode.NOP, 0, nil, nil)
 
 	bc.PushInst(l2)
-	bc.PushInst(l1)
+	bc.PushCode(*e)
 	bc.PushInst(instruction.NewInst(opcode.Split, 0, l1, l2))
 
 	return bc
