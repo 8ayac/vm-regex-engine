@@ -48,14 +48,16 @@ func NewCharacter(r rune) *Character {
 	}
 }
 
-// Compile returns a BC compiled from Character node which VM can execute.
-// The BC compiled from an expression 'a' will be like below:
-//
-// |0| Char 'a'
-//
-// Note:
-// The bytecode is just a fragment, so when finally give VM it,
-// you need to add the instruction of Match to the last of BC.
+/*
+Compile returns a BC compiled from Character node which VM can execute.
+The BC compiled from an expression 'a' will be like below:
+
+	|0| Char 'a'
+
+Note:
+The bytecode is just a fragment, so when finally give VM it,
+you need to add the instruction of Match to the last of BC.
+*/
 func (c *Character) Compile() *bytecode.BC {
 	bc := bytecode.NewByteCode()
 	bc.PushInst(instruction.NewInst(opcode.Char, c.V, nil, nil))
@@ -88,18 +90,20 @@ func NewUnion(ope1, ope2 Node) *Union {
 	}
 }
 
-// Compile returns a BC compiled from Union node which VM can execute.
-// The BC compiled from an expression 'a|b' will be like below:
-//
-// |0| Split 1, 3
-// |1| Char 'a'
-// |2| Jmp 4
-// |3| Char 'b'
-// |4| <nop>
-//
-// Note:
-// The bytecode is just a fragment, so when finally give VM it,
-// you need to add the instruction of Match to the last of BC.
+/*
+Compile returns a BC compiled from Union node which VM can execute.
+The BC compiled from an expression 'a|b' will be like below:
+
+	|0| Split 1, 3
+	|1| Char 'a'
+	|2| Jmp 4
+	|3| Char 'b'
+	|4| <nop>
+
+Note:
+The bytecode is just a fragment, so when finally give VM it,
+you need to add the instruction of Match to the last of BC.
+*/
 func (u *Union) Compile() *bytecode.BC {
 	bc := bytecode.NewByteCode()
 
@@ -132,16 +136,18 @@ type Concat struct {
 	Ope2 Node
 }
 
-// Compile returns a BC compiled from Concat node which VM can execute.
-// The BC compiled from an expression 'abc' will be like below:
-//
-// |0| Char 'a'
-// |1| Char 'b'
-// |2| Char 'c'
-//
-// Note:
-// The bytecode is just a fragment, so when finally give VM it,
-// you need to add the instruction of Match to the last of BC.
+/*
+Compile returns a BC compiled from Concat node which VM can execute.
+The BC compiled from an expression 'abc' will be like below:
+
+	|0| Char 'a'
+	|1| Char 'b'
+	|2| Char 'c'
+
+Note:
+The bytecode is just a fragment, so when finally give VM it,
+you need to add the instruction of Match to the last of BC.
+*/
 func (c *Concat) Compile() *bytecode.BC {
 	bc := bytecode.NewByteCode()
 
@@ -179,17 +185,19 @@ type Star struct {
 	Ope Node
 }
 
-// Compile returns a BC compiled from Star node which VM can execute.
-// The BC compiled from an expression 'abc' will be like below:
-//
-// |00| Split 1, 3
-// |01| Char 'a'
-// |02| Jmp 0
-// |03| <nop>
-//
-// Note:
-// The bytecode is just a fragment, so when finally give VM it,
-// you need to add the instruction of Match to the last of BC.
+/*
+Compile returns a BC compiled from Star node which VM can execute.
+The BC compiled from an expression 'abc' will be like below:
+
+	|00| Split 1, 3
+	|01| Char 'a'
+	|02| Jmp 0
+	|03| <nop>
+
+Note:
+The bytecode is just a fragment, so when finally give VM it,
+you need to add the instruction of Match to the last of BC.
+*/
 func (s *Star) Compile() *bytecode.BC {
 	bc := bytecode.NewByteCode()
 
@@ -231,16 +239,18 @@ type Plus struct {
 	Ope Node
 }
 
-// Compile returns a BC compiled from Plus node which VM can execute.
-// The BC compiled from an expression 'a' will be like below:
-//
-// |00| Char 'a'
-// |01| Split 0, 2
-// |02| <nop>
-//
-// Note:
-// The bytecode is just a fragment, so when finally give VM it,
-// you need to add the instruction of Match to the last of BC.
+/*
+Compile returns a BC compiled from Plus node which VM can execute.
+The BC compiled from an expression 'a' will be like below:
+
+	|00| Char 'a'
+	|01| Split 0, 2
+	|02| <nop>
+
+Note:
+The bytecode is just a fragment, so when finally give VM it,
+you need to add the instruction of Match to the last of BC.
+*/
 func (p *Plus) Compile() *bytecode.BC {
 	bc := bytecode.NewByteCode()
 
@@ -279,16 +289,18 @@ type Question struct {
 	Ope Node
 }
 
-// Compile returns a BC compiled from Question node which VM can execute.
-// The BC compiled from an expression 'a' will be like below:
-//
-// |00| Split 1, 2
-// |01| Char 'a'
-// |02| <nop>
-//
-// Note:
-// The bytecode is just a fragment, so when finally give VM it,
-// you need to add the instruction of Match to the last of BC.
+/*
+Compile returns a BC compiled from Question node which VM can execute.
+The BC compiled from an expression 'a' will be like below:
+
+	|00| Split 1, 2
+	|01| Char 'a'
+	|02| <nop>
+
+Note:
+The bytecode is just a fragment, so when finally give VM it,
+you need to add the instruction of Match to the last of BC.
+*/
 func (q *Question) Compile() *bytecode.BC {
 	bc := bytecode.NewByteCode()
 
@@ -326,14 +338,16 @@ type Any struct {
 	Ty string
 }
 
-// Compile returns a BC compiled from Any node which VM can execute.
-// The BC compiled from an expression '.' will be like below:
-//
-// |00| Any
-//
-// Note:
-// The bytecode is just a fragment, so when finally give VM it,
-// you need to add the instruction of Match to the last of BC.
+/*
+Compile returns a BC compiled from Any node which VM can execute.
+The BC compiled from an expression '.' will be like below:
+
+	|00| Any
+
+Note:
+The bytecode is just a fragment, so when finally give VM it,
+you need to add the instruction of Match to the last of BC.
+*/
 func (a *Any) Compile() *bytecode.BC {
 	bc := bytecode.NewByteCode()
 	bc.PushInst(instruction.NewInst(opcode.ANY, 0, nil, nil))
